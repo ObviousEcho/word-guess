@@ -4,22 +4,18 @@ var game = [
     word: "javascript",
     blank: ["_", "_", "_", "_", "_", "_", "_", "_", "_", "_"],
   }),
-
   (func = {
     word: "function",
     blank: ["_", "_", "_", "_", "_", "_", "_", "_"],
   }),
-
   (variable = {
     word: "variable",
     blank: ["_", "_", "_", "_", "_", "_", "_", "_"],
   }),
-
   (object = {
     word: "object",
     blank: ["_", "_", "_", "_", "_", "_"],
   }),
-
   (array = {
     word: "array",
     blank: ["_", "_", "_", "_", "_"],
@@ -36,20 +32,27 @@ var guessBlank = randomWord.blank;
 // variables to store dynamic creation of html and eventlisteners:
 var click = document.querySelector(".button");
 var keyPress = document.querySelector("body");
-var div = document.createElement("div");
+var divWord = document.createElement("div");
+var divTime = document.createElement("div");
+var wordElement = document.getElementById("word");
+var timerElement = document.getElementById("timer");
+
+// time variable:
+var secondsLeft = 20;
 
 // =========================================================
 
 // eventlistener begins game on start button:
 click.addEventListener("click", function () {
   render();
+  setTime();
 });
 
 // dynamically renders blanks to screen:
 
 function render() {
-  div.innerHTML = randomWord.blank.join(" ");
-  document.body.appendChild(div);
+  divWord.innerHTML = randomWord.blank.join(" ");
+  wordElement.appendChild(divWord);
   console.log(game[random].word);
 }
 
@@ -71,6 +74,21 @@ keyPress.addEventListener("keydown", function (event) {
 
 //   dynamically renders user guess to html:
 function renderAnswer() {
-  div.innerHTML = guessBlank.join(" ");
-  document.body.appendChild(div);
+  divWord.innerHTML = guessBlank.join(" ");
+  wordElement.appendChild(divWord);
+}
+
+// timer function:
+function setTime() {
+  // sets interval in variable
+  var timerInterval = setInterval(function () {
+    // appends time to html
+    divTime.textContent = secondsLeft;
+    timerElement.appendChild(divTime);
+    secondsLeft--;
+    // game ends and timer stops at 0
+    if (secondsLeft === 0) {
+      clearInterval(timerInterval);
+    }
+  }, 1000);
 }
